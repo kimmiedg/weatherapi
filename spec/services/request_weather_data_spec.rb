@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 RSpec.describe RequestWeatherData do
   subject {
     RequestWeatherData.new(city: "Manila", country: 'Philippines')
@@ -10,7 +11,7 @@ RSpec.describe RequestWeatherData do
 
   it "must return a geo location JSON response" do
     geo_loc = subject.send(:get_geo_location)
-    expect(subject.key?("lat") && subject.key?("lon")).to be true
+    expect(geo_loc.key?("lat") && geo_loc.key?("lon")).to be true
   end
 
   it "must return success forecast in JSON format" do
