@@ -28,6 +28,20 @@ class RequestWeatherData
       result
     end
 
+    def generate_forecast
+      geo_location = get_geo_location
+      return geo_location if geo_location.key?("errors") || geo_location.key?(:errors)
+
+      lat = geo_location["lat"]
+      lon = geo_location["lon"]
+      result = { errors: "Cannot retrieve forecast.", status: 404}
+      if lat.present? && lon.present?
+        uri = URI("https://api.open-meteo.com/v1/forecast?latitude=#{lat}&longitude=#{lon}&current_weather=true")
+        result = uri_request(uri)
+      end
+
+      return result
+    end
 
     def get_geo_location
       return {errors: "City is not specified", status: 400} if @city.blank?
